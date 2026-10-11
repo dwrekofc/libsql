@@ -87,7 +87,10 @@ impl HttpSender {
                 .await
                 .map_err(HranaError::from)?;
             let body = String::from_utf8(body.into()).unwrap();
-            return Err(HranaError::Api(format!("status={}, body={}", status, body)));
+            return Err(HranaError::Status {
+                status: status.as_u16(),
+                message: format!("status={}, body={}", status, body),
+            });
         }
 
         let body: super::HttpBody<ByteStream> = if resp.is_end_stream() {

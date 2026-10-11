@@ -176,6 +176,9 @@ pub use value::{Value, ValueRef, ValueType};
 
 cfg_hrana! {
     mod hrana;
+    /// The type inside `Error::Hrana`, public so callers can match its
+    /// variants instead of its message (vault fork).
+    pub use hrana::{CursorResponseError, HranaError};
 }
 
 pub use self::{

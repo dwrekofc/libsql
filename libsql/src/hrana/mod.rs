@@ -96,6 +96,9 @@ pub enum HranaError {
     Http(String),
     #[error("api error: `{0}`")]
     Api(String),
+    /// A non-200 HTTP answer, with its status code; displayed as `Api` was.
+    #[error("api error: `{message}`")]
+    Status { status: u16, message: String },
 }
 
 #[derive(Debug, thiserror::Error)]
