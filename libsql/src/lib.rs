@@ -179,6 +179,9 @@ cfg_hrana! {
     /// The type inside `Error::Hrana`, public so callers can match its
     /// variants instead of its message (vault fork).
     pub use hrana::{CursorResponseError, HranaError};
+    /// A statement's error as the server sent it: its message and typed
+    /// code (inside `HranaError::Step` and `HranaError::StreamError`).
+    pub use hrana::proto::Error as HranaProtoError;
 }
 
 pub use self::{
