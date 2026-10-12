@@ -99,6 +99,11 @@ pub enum HranaError {
     /// A non-200 HTTP answer, with its status code; displayed as `Api` was.
     #[error("api error: `{message}`")]
     Status { status: u16, message: String },
+    /// A statement of a batch failed: the database's own answer, with its
+    /// typed code (`SQLITE_BUSY`, `SQLITE_CONSTRAINT_UNIQUE`, ...), which
+    /// upstream drops; displayed as `Api` was.
+    #[error("api error: `{}`", .0.message)]
+    Step(proto::Error),
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -419,7 +424,7 @@ pub(crate) fn unwrap_err(batch_res: &BatchResult) -> crate::Result<()> {
         .step_errors
         .iter()
         .find_map(|e| e.clone())
-        .map(|e| Err(crate::Error::Hrana(Box::new(HranaError::Api(e.message)))))
+        .map(|e| Err(crate::Error::Hrana(Box::new(HranaError::Step(e)))))
         .unwrap_or(Ok(()))
 }
 
